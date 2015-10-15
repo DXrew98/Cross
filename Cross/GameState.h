@@ -3,20 +3,25 @@
 #include "string.h"
 
 
-
+enum LANG {English, French, German};
 
 struct Player {
-	int currentBlock;
+	int pCurrentBlock;
 	int food;
 	bool gun;
 	bool docOutfit;
+	LANG playerLang = LANG;
 
 	void movePlayer();
+	int enemyCheck(Npc one);
 };
 
-class Npc {
+struct Npc {
+	int eCurrentBlock;
 
+	void moveNpc();
 };
+
 
 
 class GameState

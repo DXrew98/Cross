@@ -55,7 +55,6 @@ int getNumValid(int min, int max) {
 	int select;
 	do
 	{
-		std::cout << "Enter a valid number" << std::endl;
 		std::cin >> select;
 
 
