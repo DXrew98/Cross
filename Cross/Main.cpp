@@ -1,5 +1,6 @@
 #include <iostream>
 #include <malloc.h>
+#include <fstream>
 #include "string.h"
 #include "GameState.h"
 #include "Consts.h"
