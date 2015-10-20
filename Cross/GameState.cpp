@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <stdio.h> 
 #include <time.h>  
+#include <string>
 #include "consts.h"
 #include "GameState.h"
 #include "string.h"
@@ -30,12 +31,11 @@ int clampInt(int lowerBound, int upperBound, int value)
 
 void GameState::play() {
 	srand(time(NULL));
-	
 
 	win.playerAtExit = false;
 	player1.caught = false;
 
-	win.exitCurrentBlock = clampInt(10, 21, rand() % 10 + 12);
+	win.exitCurrentBlock = clampInt(10, 21, rand() % 10 + 10);
 	player1.pCurrentBlock = 1;
 
 	enemy.eCurrentBlock = clampInt( 2, 21, rand() % 21 + 2);
@@ -43,6 +43,7 @@ void GameState::play() {
 	enemy3.eCurrentBlock = clampInt(2, 21, rand() % 21 + 2);
 
 	win.displayBorder();
+	remove("PlayerPath.txt");
 }
 
 STATE GameState::update(){
@@ -72,12 +73,27 @@ void Border::displayBorder()
 
 void Border::winCheck(Player &player1)
 {
+	std::fstream file;
 	if (player1.pCurrentBlock == exitCurrentBlock) { playerAtExit = true; }
 	else { playerAtExit = false; }
 
 	if (playerAtExit == true){
 		system("cls");
 		std::cout << "You escaped!" << std::endl;
+		std::cout << std::endl;
+
+		//help from C++ form
+		file.open("PlayerPath.txt", std::ios_base::in);
+		if (file.is_open())
+		{
+			char t[65535];
+			while (file >> t) {
+				std::cout << t;
+				std::cout << std::endl;
+			}
+			file.close();
+		}
+		remove("PlayerPath.txt");
 		system("pause");
 	}
 }
@@ -85,14 +101,22 @@ void Border::winCheck(Player &player1)
 
 void Player::movePlayer()
 {
-	
+	std::fstream file;
+
 	std::cout << "You are on " << blockNames[pCurrentBlock] << std::endl;
 	std::cout << "Which street would you like to go to?" << std::endl;
 	for (int i = 0; i < 3; ++i) {
 		std::cout << i + 1 << ": " << blockNames[blocks[pCurrentBlock][i]] << std::endl;
 	}
 	pCurrentBlock = blocks[pCurrentBlock][getNumValid(1, 3) - 1];
-	file.open("PlayerPath.txt", ios_base::out);
+
+	file.open("PlayerPath.txt", std::ios_base::out | std::ios_base::app);
+	if (file.is_open())
+	{
+		file << "Moved>>" << std::endl;
+		file << blockNames[pCurrentBlock] << std::endl;
+	}
+	file.close();
 }
 
 void Player::enemyCheck(Npc enemyOne)

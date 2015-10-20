@@ -27,6 +27,7 @@ struct Player {
 };
 
 struct Border {
+	
 	bool playerAtExit;
 	int exitCurrentBlock;
 

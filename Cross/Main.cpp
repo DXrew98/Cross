@@ -12,6 +12,7 @@ int main() {
 	GameState g;
 	STATE current = SPLASH;
 
+
 	while (true) {
 		switch (current) {
 		case SPLASH:splash();
